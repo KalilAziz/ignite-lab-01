@@ -6,3 +6,12 @@ async function bootstrap() {
   await app.listen(3333);
 }
 bootstrap();
+
+/*Para instalar o graphQL no NestJS é bem simples, basta a gente seguri o quickStart
+normalmente da documentação do NestJS, que é o seguinte:
+
+npm i @nestjs/graphql @nestjs/apollo @apollo/server graphql
+
+Agora vamos em http.module.ts e vamos colocar algumas configurações para 
+o NestJS
+*/

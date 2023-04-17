@@ -28,34 +28,31 @@
 - [Auth] Listar cursos que tenho acesso
 - [Auth] Acessar conteúdo do curso
 
-Para começar, dentro de purchases, iremos deletar nosso controller e nosso
-service também, pois não iremos mais utilizar e iremos retirar suas import
-ações do módulo.
+Agora que terminamos de configurar nosso ambiente de purchases, iremos fazer a
+configuração do ambiente de classroom. Para isso, vamos apagar o Classroom, pois
+iremos fazer um comando para duplicar o purchases:
 
-Agora iremos usar a cli entro de purchases para nos ajudar a criar novas
-estruturas.
+rm -rf classroom
+cp -r purchases/ classroom
+cd classroom
+rm -rf node_modules
+rm -rf dist
+npm install
 
-A primeira coisa que vamos gerar será um módulo só para bancos de dados,
-pois iremos utilizar para tentar desacomplar o máximo possível do nosso
-projeto.
+Agora vamos alterar o nome do package.json para classroom
 
-nest generate module database
+no arquivo .env, vamos alterar o nome do banco de dados para
+DATABASE_URL="postgresql://docker:docker@localhost:5432/classroom-ignite?schema=public"
 
-Vamos criar um módulo também para http, pois iremos utilizar para colocar
-tudo sobre rotas dentro dele
+Na pasta prisma, iremos deletar a pasta migrations
 
-nest generate module http
+E dentro de schema.prisma, criar um novo model só para testes:
 
-Agora, por enquanto, vamos trabalhar com um autenticação dentro de http,
-pois iremos utilizar para colocar tudo sobre rotas dentro dele.
+model Student {
+id String @id @default(uuid())
+}
 
-Para começar, iremos criar um arquivo .env e acidionar ele também
-dentro do .gitignore
+e vamos rodar o comando:
+npx prisma migrate dev
 
-Para que o nestjs consiga ler o arquivo .env, precisamos instalar o
-@nestjs/config com o seguinte comando:
-
-npm i @nestjs/config
-
-E agora vamos começar a trabalhar em nosso arquivo http.module.ts que
-foi gerado para a gente
+Para finalizar, vamos no arquivo main e alterar o endereço para 3334
