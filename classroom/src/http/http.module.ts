@@ -1,7 +1,6 @@
-// path: purchases/src/http/http.module.ts
+// path: Classroom/src/http/http.module.ts
 import { Module } from '@nestjs/common';
 
-// Temos que importar para que possamos trabalhar com as variáveis de ambiente
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { DatabaseModule } from 'src/database/database.module';
@@ -24,12 +23,6 @@ import { join } from 'path';
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
   ],
-  // Remove de controller e adiciona em providers
-  // controllers: [TextController],
   providers: [TestResolver],
 })
 export class HttpModule {}
-
-/* Agora para testar, vamos em src/http/test/test.controller.ts e renomear o arquivo, em vez de
-.controler.ts será .resolver.ts
- */

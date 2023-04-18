@@ -1,4 +1,4 @@
-// path: purchases/src/database/prisma/prisma.service.ts
+// path: Classroom/src/database/prisma/prisma.service.ts
 
 import {
   INestApplication,

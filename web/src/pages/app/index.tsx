@@ -1,5 +1,5 @@
 // path: web/src/pages/app/index.tsx
-import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { GetServerSideProps } from "next";
 
@@ -19,4 +19,23 @@ export default function Home() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = withPageAuthRequired();
+export const getServerSideProps: GetServerSideProps = async (context)  => {
+  // pegar o token do usuário
+  const user = await getSession(context.req, context.res);
+
+  console.log(user)
+
+  // se o usuário não estiver logado, redirecionar para a página de logi
+  if (!user) {
+    return {
+      redirect: {
+        destination: "/api/auth/login",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}

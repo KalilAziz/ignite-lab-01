@@ -1,3 +1,5 @@
+// path: Classroom/src/main.ts
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
@@ -7,11 +9,8 @@ async function bootstrap() {
 }
 bootstrap();
 
-/*Para instalar o graphQL no NestJS é bem simples, basta a gente seguri o quickStart
-normalmente da documentação do NestJS, que é o seguinte:
-
-npm i @nestjs/graphql @nestjs/apollo @apollo/server graphql
-
-Agora vamos em http.module.ts e vamos colocar algumas configurações para 
-o NestJS
-*/
+/* Com toda a parte do Purchases finalizada, iremos agora começar a parte do Classroom. Para isso, iremos fazer alguns ajustes necessários para o funcionamento. Vamos começar, dentro de src/http,
+iremos criar uma pasta chamado graphql, e dentro dela teremos uma pasta para os resolvers, e outra
+para os models, depois, como fizemos algumas alterações na pasta authorization, iremos apagar ela
+e copiar diretamente da pasta Purchases. Iremos apagar a pasta test com seu model, já que não
+mais usaremos ela.*/

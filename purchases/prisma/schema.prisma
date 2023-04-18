@@ -1,3 +1,5 @@
+// path: purchases/prisma/schema.prisma
+
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 // path: purchases/prisma/schema.prisma
@@ -11,6 +13,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Agora, como o Customer são nossos usuários, temos que criar um meio de relacionar o
+// Customer com o usuário do Auth0. Para isso, vamos criar um campo chamado authUserId
+
 model Customer {
-  id        String      @id @default(uuid())
+  id String @id @default(uuid())
+
+  authUserId String? @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  purchase Purchase[]
+}
+
+model Product {
+  id String @id @default(uuid())
+
+  title String
+  slug  String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  purchasedOn Purchase[]
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  FAILED
+}
+
+model Purchase {
+  id String @id @default(uuid())
+
+  status Status @default(PENDING)
+
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
