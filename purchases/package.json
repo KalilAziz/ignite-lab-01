@@ -20,18 +20,23 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@apollo/federation": "^0.38.1",
     "@apollo/server": "^4.6.0",
+    "@apollo/gateway": "2.2.3",
+    "@apollo/subgraph": "2.2.3",
     "@nestjs/apollo": "^11.0.5",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^9.0.0",
     "@nestjs/graphql": "^11.0.5",
+    "@nestjs/microservices": "^9.4.0",
     "@nestjs/platform-express": "^9.0.0",
     "@prisma/client": "^4.12.0",
     "express-jwt": "^8.4.1",
     "express-oauth2-jwt-bearer": "^1.4.1",
     "graphql": "^16.6.0",
     "jwks-rsa": "^3.0.1",
+    "kafkajs": "^2.2.4",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "slugify": "^1.6.6"

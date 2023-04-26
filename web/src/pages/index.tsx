@@ -5,6 +5,8 @@ import { GetServerSideProps } from "next";
 /* Mas iremos fazer algo difetente aqui, iremos mandar para o usuário direto para a página de login, caso ele não esteja logado e caso ele esteja logado, iremos mandar para a página de app
  */
 
+
+
 export default function Home() {
   return null;
 }

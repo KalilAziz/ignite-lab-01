@@ -1,41 +1,44 @@
 // path: web/src/pages/app/index.tsx
-import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { Product, useMeQuery } from '@/graphql/generated/graphql';
+import { getServerPageGetProducts } from '@/graphql/generated/page';
+import { ssrGetProducts } from '@/graphql/generated/page';
+import { withApollo } from '@/lib/withApollo';
+import {  withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { GetServerSideProps } from "next";
 
-/* Mas iremos fazer algo difetente aqui, iremos mandar para o usuário direto para a página de login, caso ele não esteja logado
- */
+type HomeProps = {
+  data: {
+    products: Product[]
+  }
+}
 
-export default function Home() {
+export const Home = ({data}: HomeProps) => {
   const { user } = useUser();
+  const {data: profile} = useMeQuery()
+
+  console.log(profile)
+
 
   return (
     <div>
-      <h1>Pagina app - {user?.name}</h1>
-      <h4>Profile (server rendered)</h4>
-      <a href="/api/auth/logout">Logout</a>
+      <pre>
+        {JSON.stringify(data.products, null, 2)}
+      </pre>
+      {/* <h1>Pagina app - {user?.name}</h1>
+      <h4>Profile (server rendered)</h4> */}
+      {/* <a href="/api/auth/logout">Logout</a> */}
       <pre>{JSON.stringify(user, null, 2)}</pre>
     </div>
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context)  => {
-  // pegar o token do usuário
-  const user = await getSession(context.req, context.res);
-
-  console.log(user)
-
-  // se o usuário não estiver logado, redirecionar para a página de logi
-  if (!user) {
-    return {
-      redirect: {
-        destination: "/api/auth/login",
-        permanent: false,
-      },
-    };
+export const getServerSideProps = withPageAuthRequired({
+  getServerSideProps: async (ctx) => {
+    return await getServerPageGetProducts({}, ctx)
   }
+})
 
-  return {
-    props: {},
-  };
-}
+
+export default withApollo(
+  ssrGetProducts.withPage()(Home)
+)

@@ -2,15 +2,35 @@
 
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3334);
+
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.KAFKA,
+    options: {
+      client: {
+        clientId: 'classroom',
+        brokers: ['localhost:29092'],
+      },
+    },
+  });
+
+  app.startAllMicroservices().then(() => {
+    console.log('[Classroom] Microservices running!');
+  });
+
+  app.enableCors({
+    origin: true,
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders:
+      'Content-Type,Accept,Authorization,Access-Control-Allow-Origin',
+  });
+
+  app.listen(3334).then(() => {
+    console.log('[Classroom] HTTP server running!.');
+  });
 }
 bootstrap();
-
-/* Com toda a parte do Purchases finalizada, iremos agora começar a parte do Classroom. Para isso, iremos fazer alguns ajustes necessários para o funcionamento. Vamos começar, dentro de src/http,
-iremos criar uma pasta chamado graphql, e dentro dela teremos uma pasta para os resolvers, e outra
-para os models, depois, como fizemos algumas alterações na pasta authorization, iremos apagar ela
-e copiar diretamente da pasta Purchases. Iremos apagar a pasta test com seu model, já que não
-mais usaremos ela.*/
